@@ -9,10 +9,21 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  components: { App },
-  router,
-  store,
-  template: '<App/>'
-}).$mount('#app')
+Promise.resolve().then(() => {
+  var fs = require('fs')
+  if (!fs.existsSync("db")) {
+    fs.mkdirSync("db")
+    return Promise.all([
+      require('./db/init').default(),
+      require('./db/init_app').default()
+    ])
+  }
+}).then(() => {
+  /* eslint-disable no-new */
+  new Vue({
+    components: { App },
+    router,
+    store,
+    template: '<App/>'
+  }).$mount('#app')
+})
