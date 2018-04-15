@@ -1,11 +1,10 @@
 var Sequelize = require('sequelize')
 var db = require('../db')
 
-var member = db.define(
-  'member', {
+var members = db.define(
+  'members', {
     id: {
-      type: Sequelize.BIGINT,
-      autoIncrement: true,
+      type: Sequelize.INTEGER,
       primaryKey: true
     },
     first_name: {
@@ -19,18 +18,9 @@ var member = db.define(
     },
     password: Sequelize.STRING,
     picture: Sequelize.BLOB,
-    administrator: {
+    is_administrator: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
-      allowNull: false
-    },
-    created: {
-      type: Sequelize.NOW,
-      allowNull: false
-    },
-    updated: {
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
       allowNull: false
     }
   },
@@ -38,4 +28,4 @@ var member = db.define(
     underscored: true
   })
 
-module.exports = member
+module.exports = members

@@ -2,8 +2,8 @@
 
 export default function () {
   return Promise.all([
-    require('./models/member'),
-    require('./models/punch_card')
+    require('./models/members'),
+    require('./models/punch_cards')
   ].map((o) => o.sync({
     force: true
   }))).then(function () {

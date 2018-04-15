@@ -1,12 +1,11 @@
 var Sequelize = require('sequelize')
 var db = require('../db')
-var member = require('./member')
+var members = require('./members')
 
-var punch_card = db.define(
-  'punch_card', {
+var punch_cards = db.define(
+  'punch_cards', {
     id: {
-      type: Sequelize.BIGINT,
-      autoIncrement: true,
+      type: Sequelize.INTEGER,
       primaryKey: true
     },
     action: {
@@ -20,14 +19,16 @@ var punch_card = db.define(
     },
     time: {
       type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
       allowNull: false
     }
   },
   {
-    underscored: true
+    underscored: true,
+    timestamps: false
   })
 
 // This should add a member_id column to punch_card, this may need to be defined somewhere else...
-punch_card.belongsTo(member)
+punch_cards.belongsTo(members)
 
-module.exports = punch_card
+module.exports = punch_cards
