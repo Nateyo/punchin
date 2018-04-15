@@ -12,9 +12,9 @@ var punch_card = db.define(
     action: {
       type: Sequelize.ENUM,
       values: [
-        "in",
-        "out",
-        "absent"
+        'in',
+        'out',
+        'absent'
       ],
       allowNull: false
     },
@@ -22,12 +22,12 @@ var punch_card = db.define(
       type: Sequelize.DATE,
       allowNull: false
     }
-  }, 
+  },
   {
     underscored: true
-})
+  })
 
-//This should add a member_id column to punch_card, this may need to be defined somewhere else...
+// This should add a member_id column to punch_card, this may need to be defined somewhere else...
 punch_card.belongsTo(member)
 
 module.exports = punch_card

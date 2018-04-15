@@ -11,13 +11,21 @@ Vue.config.productionTip = false
 
 Promise.resolve().then(() => {
   var fs = require('fs')
-  if (!fs.existsSync("db")) {
-    fs.mkdirSync("db")
+
+  if (!fs.existsSync('db')) {
+    fs.mkdirSync('db')
     return Promise.all([
-      require('./db/init').default(),
-      require('./db/init_app').default()
+      require('./db/init').default()
     ])
   }
+
+  // Test db connection
+  var db = require('./db/db')
+  db.authenticate().then(() => {
+    console.log('Connection to DB is ok!')
+  }).catch(err => {
+    console.error('Connection to database failed:', err)
+  })
 }).then(() => {
   /* eslint-disable no-new */
   new Vue({

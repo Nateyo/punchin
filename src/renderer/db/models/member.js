@@ -33,9 +33,9 @@ var member = db.define(
       defaultValue: Sequelize.NOW,
       allowNull: false
     }
-  }, 
+  },
   {
     underscored: true
-})
+  })
 
 module.exports = member
