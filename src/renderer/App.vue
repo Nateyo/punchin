@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <v-app id="punchin">
+      <router-view></router-view>
+    </v-app>
   </div>
 </template>
 
