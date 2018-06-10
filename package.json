@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "bcryptjs": "^2.4.3",
     "material-design-icons-iconfont": "^3.0.3",
     "sequelize": "^4.37.6",
     "sqlite3": "^4.0.0",

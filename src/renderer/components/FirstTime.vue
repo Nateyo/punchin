@@ -2,7 +2,7 @@
   <v-container>
     <v-content>
       This is the first time page.
-      <add-member></add-member>
+      <add-member forceAdmin=true></add-member>
     </v-content>
   </v-container>
 </template>
