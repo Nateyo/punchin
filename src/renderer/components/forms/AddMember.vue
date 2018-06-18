@@ -54,7 +54,7 @@
 </template>
 
 <script>
-let member_func = require('../../db/func/members')
+let member_func = require('../../db/func/members').default
 
 export default {
   name: 'AddMember',
