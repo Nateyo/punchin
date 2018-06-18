@@ -3,9 +3,6 @@
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md8>
         <v-card class="elevation-12">
-          <v-toolbar dark color="primary">
-            <v-toolbar-title>Add Member</v-toolbar-title>
-          </v-toolbar>
           <v-card-text>
             <v-form ref='add_user_form' v-model='valid' lazy-validation>
               <v-text-field
@@ -48,7 +45,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" :disabled="!valid" @click="submit">Submit</v-btn>
+            <v-btn color="primary" :disabled="!valid" @click="submit">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -82,7 +79,7 @@ export default {
       password_required: false,
       selected_role: null,
       roles: [
-        {text: 'User', value: 0},
+        {text: 'Member', value: 0},
         {text: 'Admin', value: 1}
       ],
 
@@ -93,7 +90,9 @@ export default {
       password: null,
 
       // Form settings
-      show_password: false
+      show_password: false,
+
+      member: null
     }
   },
   methods: {
@@ -108,10 +107,10 @@ export default {
         member.is_administrator = this.roles[this.selected_role].value
 
         member_func.add(member).then(member => {
-          console.log(member)
+          this.$emit('memberAdded', member)
         })
           .catch(function (err) {
-            console.error(err)
+            this.$emit('memberAdded', err)
           })
       }
     },

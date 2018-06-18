@@ -5,7 +5,8 @@ var members = db.define(
   'members', {
     id: {
       type: Sequelize.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     first_name: {
       type: Sequelize.STRING,

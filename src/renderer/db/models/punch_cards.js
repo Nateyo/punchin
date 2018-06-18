@@ -6,7 +6,8 @@ var punch_cards = db.define(
   'punch_cards', {
     id: {
       type: Sequelize.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     action: {
       type: Sequelize.ENUM,
