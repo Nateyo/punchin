@@ -15,6 +15,9 @@ export default {
           if (hide_password && member.password !== null) {
             member.password = 'hidden'
           }
+          if (member.middle_name == null) {
+            member.middle_name = ''
+          }
         })
 
         resolve(members)

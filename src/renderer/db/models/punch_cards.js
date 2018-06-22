@@ -13,8 +13,7 @@ var punch_cards = db.define(
       type: Sequelize.ENUM,
       values: [
         'in',
-        'out',
-        'absent'
+        'out'
       ],
       allowNull: false
     },
@@ -26,7 +25,12 @@ var punch_cards = db.define(
   },
   {
     underscored: true,
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        fields: ['time']
+      }
+    ]
   })
 
 // This should add a member_id column to punch_card, this may need to be defined somewhere else...
