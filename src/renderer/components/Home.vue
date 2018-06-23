@@ -102,6 +102,7 @@ export default {
         this.signed_in = []
         signed_in.forEach(punch_card => {
           if (punch_card.action === 'in') {
+            punch_card.member.time = punch_card.time
             this.signed_in.push(punch_card.member)
           }
         })

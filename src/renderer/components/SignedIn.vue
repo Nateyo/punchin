@@ -14,7 +14,11 @@
             <v-list-tile-title>{{member.first_name}} {{member.middle_name}} {{member.last_name}}</v-list-tile-title>
             <v-list-tile-sub-title v-html="member.signed_in"></v-list-tile-sub-title>
           </v-list-tile-content>
+          <v-list-tile-action>
+            <v-list-tile-action-text>@ {{member.time | formatDate}}</v-list-tile-action-text>
+          </v-list-tile-action>
         </v-list-tile>
+        <v-divider :key="`divider-${index}`"></v-divider>
       </template>
     </v-list>
   </v-card>

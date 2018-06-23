@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import axios from 'axios'
+import moment from 'moment'
 
 import App from './App'
 import router from './router'
@@ -13,6 +14,12 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(Vuetify)
+
+Vue.filter('formatDate', function (value) {
+  if (value) {
+    return moment(value).format('hh:mm a')
+  }
+})
 
 Promise.resolve().then(() => {
   var fs = require('fs')
