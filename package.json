@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "author": "Nateyo <nate.dellinger@gmail.com>",
   "description": "A simple app to keep track of members clocking in and out.",
-  "license": null,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nateyo/punchin.git"
+  },
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
@@ -24,7 +28,7 @@
   },
   "build": {
     "productName": "punchin",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "org.nateyo.punchin",
     "directories": {
       "output": "build"
     },
