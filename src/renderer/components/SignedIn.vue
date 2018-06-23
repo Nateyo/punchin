@@ -3,7 +3,7 @@
     <v-toolbar>
       <v-toolbar-title>Signed In</v-toolbar-title>
     </v-toolbar>
-    <v-list two-line>
+    <v-list two-line dense>
       <template v-for="(member, index) in members">
         <v-list-tile :key="index" avatar>
           <v-list-tile-avatar>
@@ -15,7 +15,7 @@
             <v-list-tile-sub-title v-html="member.signed_in"></v-list-tile-sub-title>
           </v-list-tile-content>
           <v-list-tile-action>
-            <v-list-tile-action-text>@ {{member.time | formatDate}}</v-list-tile-action-text>
+            <v-list-tile-action-text>{{member.time | formatDate}}</v-list-tile-action-text>
           </v-list-tile-action>
         </v-list-tile>
         <v-divider :key="`divider-${index}`"></v-divider>

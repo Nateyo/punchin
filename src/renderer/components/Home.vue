@@ -1,39 +1,43 @@
 <template>
-  <v-container fluid grid-list-xs>
-    <v-layout row wrap fill-height="true">
-      <v-flex xs3 md3 d-flex>
-        <signed-in :members=signed_in></signed-in>
-      </v-flex>
-      <v-flex d-flex>
-        <v-card color="blue-grey">
-          <v-card-title>A title.</v-card-title>
-          <v-card-text>
-            <v-select
-              ref='r_select_member'
-              :items="select_members"
-              v-model="member"
-              v-on:input="changeMember"
-              label="Member Name"
-              autocomplete
-            ></v-select>
-            <v-btn color="info" v-bind:disabled="in_disabled" @click="punch_in">IN</v-btn>
-            <v-btn color="info" v-bind:disabled="out_disabled" @click="punch_out">OUT</v-btn>
-            <v-btn color="info" v-if="show_admin">ADMIN</v-btn>
-          </v-card-text>
-        </v-card>
-        <v-snackbar
-          :timeout="snackbar_action_timeout"
-          bottom
-          right
-          v-model="snackbar_action"
-          >
-          <v-flex fill-height="true" align-center="true">
-            {{ snackbar_action_text }}
+  <v-layout row wrap>
+    <v-flex xs3 md3 d-flex>
+      <signed-in :members=signed_in></signed-in>
+    </v-flex>
+    <v-flex d-flex>
+      <v-container grid-list-md text-xs-center>
+        <v-layout row wrap justify-center="true">
+          <v-flex xs7 md7>
+            <v-card>
+              <v-card-text>
+                <v-select
+                  ref='r_select_member'
+                  :items="select_members"
+                  v-model="member"
+                  v-on:input="changeMember"
+                  label="Find User"
+                  clearable
+                  autocomplete
+                ></v-select>
+                <v-btn color="info" v-bind:disabled="in_disabled" @click="punch_in">IN</v-btn>
+                <v-btn color="info" v-bind:disabled="out_disabled" @click="punch_out">OUT</v-btn>
+                <v-btn color="info" v-if="show_admin">ADMIN</v-btn>
+              </v-card-text>
+            </v-card>
           </v-flex>
-        </v-snackbar>
-      </v-flex>
-    </v-layout>
-  </v-container>
+        </v-layout>
+      </v-container>
+      <v-snackbar
+        :timeout="snackbar_action_timeout"
+        bottom
+        right
+        v-model="snackbar_action"
+        >
+        <v-flex fill-height="true" align-center="true">
+          {{ snackbar_action_text }}
+        </v-flex>
+      </v-snackbar>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
