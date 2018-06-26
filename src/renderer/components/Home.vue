@@ -18,11 +18,51 @@
                   clearable
                   autocomplete
                 ></v-select>
-                <v-btn color="info" v-bind:disabled="in_disabled" @click="punch_in">IN</v-btn>
-                <v-btn color="info" v-bind:disabled="out_disabled" @click="punch_out">OUT</v-btn>
-                <v-btn color="info" v-if="show_admin">ADMIN</v-btn>
+                <v-tooltip bottom>
+                  <v-btn slot="activator" color="info" v-bind:disabled="in_disabled" @click="punch_in">IN</v-btn>
+                  <span>Punch-in to the system</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <v-btn slot="activator" color="info" v-bind:disabled="out_disabled" @click="punch_out">OUT</v-btn>
+                  <span>Punch-out of the system</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <v-btn slot="activator" color="info" v-if="show_admin" @click="dialog_admin = true">ADMIN</v-btn>
+                  <span>Access to administrative functions</span>
+                </v-tooltip>
               </v-card-text>
             </v-card>
+            <v-dialog v-model="dialog_admin" max-width="500px">
+              <v-card>
+                <v-card-title>
+                  Admin
+                </v-card-title>
+                <v-card-text>
+                  <v-form ref='admin_auth_form' v-model='admin_form_valid' validation>
+                    <v-text-field
+                      v-model='password'
+                      label='Password'
+                      :append-icon="show_password ? 'visibility' : 'visibility_off'"
+                      :append-icon-cb="() => (show_password = !show_password)"
+                      :type="show_password ? 'text' : 'password'"
+                      :rules="rule_password"
+                      min=10
+                      required
+                    ></v-text-field>
+                  </v-form>
+                  <v-alert :value="password_alert" type="error">
+                    The password you entered was incorrect.
+                  </v-alert>
+                  <v-alert :value="password_alert_success" type="success">
+                    Success!
+                  </v-alert>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn color="primary" flat @click.stop="dialog_admin = false">Cancel</v-btn>
+                  <v-btn color="primary" flat :disabled="!admin_form_valid" @click="check_admin">Submit</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-flex>
         </v-layout>
       </v-container>
@@ -61,12 +101,21 @@ export default {
       members: [],
       signed_in: [],
       member: null,
-      in_disabled: false,
-      out_disabled: false,
+      in_disabled: true,
+      out_disabled: true,
       show_admin: false,
+      dialog_admin: false,
       snackbar_action: false,
       snackbar_action_text: null,
-      snackbar_action_timeout: 3000
+      snackbar_action_timeout: 3000,
+      admin_form_valid: false,
+      show_password: false,
+      password: null,
+      rule_password: [
+        v => !!v || 'This field is required.'
+      ],
+      password_alert: false,
+      password_alert_success: false
     }
   },
   computed: {
@@ -82,8 +131,31 @@ export default {
       return members
     }
   },
+  watch: {
+    dialog_admin (val) {
+      if (!val) {
+        this.password = null
+        this.password_alert = false
+        this.password_alert_success = false
+        this.admin_form_valid = false
+        this.$refs.admin_auth_form.reset()
+      }
+    }
+  },
   methods: {
+    check_admin: function () {
+      member_func.verify(this.member.id, this.password).then(success => {
+        if (success) {
+          this.password_alert = false
+          this.password_alert_success = true
+        } else {
+          this.password_alert = true
+        }
+      })
+    },
     changeMember: function () {
+      this.password = null
+      this.$refs.admin_auth_form.reset()
       this.update_status()
       this.update_signed_in()
     },
