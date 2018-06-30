@@ -16,6 +16,11 @@ export default new Router({
       component: require('@/components/Home').default
     },
     {
+      path: '/Admin',
+      name: 'Admin',
+      component: require('@/components/Admin').default
+    },
+    {
       path: '/FirstTime',
       name: 'FirstTime',
       component: require('@/components/FirstTime').default

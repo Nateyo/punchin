@@ -148,6 +148,7 @@ export default {
         if (success) {
           this.password_alert = false
           this.password_alert_success = true
+          this.$router.push('/Admin')
         } else {
           this.password_alert = true
         }
