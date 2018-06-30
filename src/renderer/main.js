@@ -21,6 +21,12 @@ Vue.filter('formatDate', function (value) {
   }
 })
 
+Vue.filter('formatDatetime', function (value) {
+  if (value) {
+    return moment(value).format('MMMM Do YYYY, h:mm:ss a')
+  }
+})
+
 Promise.resolve().then(() => {
   var fs = require('fs')
 

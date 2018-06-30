@@ -1,37 +1,40 @@
 <template>
-  <v-content>
-    <v-breadcrumbs>
-      <v-icon slot="divider">chevron_right</v-icon>
-      <v-breadcrumbs-item
-        v-for="item in items"
-        :key="item.text"
-        :disabled="item.disabled"
-        :to="item.to"
-      >
-        {{ item.text }}
-      </v-breadcrumbs-item>
-    </v-breadcrumbs>
-    <v-layout row wrap>
-      <v-flex md-offset1>
-        <v-card>
-          <v-card-text>User Management</v-card-text>
-        </v-card>
-      </v-flex>
-      <v-flex>
-        <v-card>
-          <v-card-text>Report Generation</v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-content>
+  <v-layout column>
+    <breadcrumbs :crumbs=breadcrumbs></breadcrumbs>
+    <v-flex> <!--buttons -->
+      <v-layout row wrap>
+        <v-flex xs6>
+          <v-card @click.native="user_management" color="red" ripple height="150px">
+            <v-card-text>
+              <h2>
+                User Management
+              </h2>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex xs6>
+          <v-card @click.native="reports" color="green" ripple height="150px">
+            <v-card-text>
+              <h2>
+                Reports
+              </h2>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
+import Breadcrumbs from './admin/Breadcrumbs.vue'
+
 export default {
   name: 'Admin',
+  components: {Breadcrumbs},
   data: function () {
     return {
-      items: [
+      breadcrumbs: [
         {
           to: '/Home',
           exact: true,
@@ -43,6 +46,14 @@ export default {
           text: 'Admin'
         }
       ]
+    }
+  },
+  methods: {
+    user_management: function () {
+      this.$router.push('/UserManagement')
+    },
+    reports: function () {
+      this.$router.push('/Reports')
     }
   }
 }
