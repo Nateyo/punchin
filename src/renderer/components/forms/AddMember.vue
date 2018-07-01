@@ -29,6 +29,17 @@
           min=10
           :required="password_required"
         ></v-text-field>
+        <v-text-field
+          v-model='password2'
+          label='Confirm Password'
+          :append-icon="show_password ? 'visibility' : 'visibility_off'"
+          :append-icon-cb="() => (show_password = !show_password)"
+          :type="show_password ? 'text' : 'password'"
+          :rules="rule_password2"
+          :hint="password2_hint"
+          min=10
+          :required="password_required"
+        ></v-text-field>
         <v-select
           :items="roles"
           v-model="selected_role"
@@ -74,9 +85,11 @@ export default {
         v => v !== null || 'Please select a role.'
       ],
       rule_password: [],
+      rule_password2: [],
       password_required: false,
       selected_role: null,
       password_hint: '',
+      password2_hint: '',
       roles: [
         {text: 'Member', value: 0},
         {text: 'Admin', value: 1}
@@ -87,6 +100,7 @@ export default {
       middle_name: null,
       last_name: null,
       password: null,
+      password2: null,
 
       // Form settings
       show_password: false,
@@ -107,11 +121,15 @@ export default {
         ]
         this.password_required = true
         this.password_hint = 'At least 10 characters which must include at least one lower-case, upper-case, and number.'
+        this.password2_hint = 'Please confirm your password be re-entering.'
       } else {
         this.rule_password = []
         this.password_required = false
         this.password_hint = 'Password is not required for members, but can be used if desired.'
+        this.password2_hint = 'Please confirm your password be re-entering.'
       }
+      this.rule_password2 = this.rule_password.slice(0)
+      this.rule_password2.push(v => (v && (v === this.password)) || 'The given passwords do not match!')
     }
   },
   methods: {
