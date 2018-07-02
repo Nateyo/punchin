@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Breadcrumbs from './admin/Breadcrumbs.vue'
+import Breadcrumbs from './Breadcrumbs.vue'
 
 export default {
   name: 'Reports',

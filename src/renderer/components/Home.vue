@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import SignedIn from './SignedIn.vue'
+import SignedIn from './home/SignedIn.vue'
 let member_func = require('../db/func/members').default
 let punch_cards_func = require('../db/func/punch_cards').default
 

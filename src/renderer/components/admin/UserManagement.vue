@@ -17,14 +17,26 @@
             :items="members"
             class="elevation-4"
           >
-            <template @click.native="test" slot="items" slot-scope="props">
+            <template slot="items" slot-scope="props">
               <td>{{ props.item.first_name }}</td>
               <td>{{ props.item.middle_name }}</td>
               <td>{{ props.item.last_name }}</td>
               <td>{{ props.item.has_password }}</td>
               <td>{{ props.item.updated_at | formatDatetime }}</td>
+              <td class="text-xs-center">
+                <v-btn @click.native="edit_user_btn(props.item)" color="primary" small><v-icon>mdi-account-edit</v-icon></v-btn>
+              </td>
+              <td class="text-xs-center">
+                <v-btn @click.native="delete_user_btn(props.item)" color="error" small><v-icon>mdi-delete</v-icon></v-btn>
+              </td>
             </template>
           </v-data-table>
+          <delete-dialog 
+            :enabled=delete_dialog
+            :user=current_user
+            @delete-user="delete_user"
+            >
+          </delete-dialog>
         </div>
       </v-layout>
     </v-flex>
@@ -32,13 +44,14 @@
 </template>
 
 <script>
-import Breadcrumbs from './admin/Breadcrumbs.vue'
-import AddMember from './forms/AddMember.vue'
-let member_func = require('../db/func/members').default
+import Breadcrumbs from './Breadcrumbs.vue'
+import DeleteDialog from './user_management/DeleteDialog.vue'
+import AddMember from '../forms/AddMember.vue'
+let member_func = require('../../db/func/members').default
 
 export default {
   name: 'UserManagement',
-  components: {AddMember, Breadcrumbs},
+  components: {AddMember, Breadcrumbs, DeleteDialog},
   beforeCreate () {
     member_func.fetchAll(true).then(members => {
       members.forEach(member => {
@@ -56,6 +69,8 @@ export default {
       search: '',
       add_dialog: false,
       members: [],
+      current_user: null,
+      delete_dialog: false,
       breadcrumbs: [
         {
           to: '/Home',
@@ -75,7 +90,9 @@ export default {
         { text: 'Middle Name', value: 'middle_name' },
         { text: 'Last Name', value: 'last_name' },
         { text: 'Has Password', value: 'has_password' },
-        { text: 'Last Updated', value: 'updated_at' }
+        { text: 'Last Updated', value: 'updated_at' },
+        { text: 'Edit', value: 'id', sortable: false, align: 'center' },
+        { text: 'Remove', value: 'id', sortable: false, align: 'center' }
       ]
     }
   },
@@ -91,6 +108,20 @@ export default {
     },
     add_canceled: function () {
       this.add_dialog = false
+    },
+    edit_user_btn: function (user) {
+      console.log(user)
+    },
+    delete_user_btn: function (user) {
+      this.current_user = user
+      this.delete_dialog = true
+    },
+    delete_user: function (agreed) {
+      if (agreed) {
+        console.log(this.current_user)
+      }
+      this.delete_dialog = false
+      this.current_user = null
     }
   }
 }

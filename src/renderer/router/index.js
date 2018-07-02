@@ -18,17 +18,17 @@ export default new Router({
     {
       path: '/Admin',
       name: 'Admin',
-      component: require('@/components/Admin').default
+      component: require('@/components/admin/Admin').default
     },
     {
       path: '/Reports',
       name: 'Reports',
-      component: require('@/components/Reports').default
+      component: require('@/components/admin/Reports').default
     },
     {
       path: '/UserManagement',
       name: 'UserManagement',
-      component: require('@/components/UserManagement').default
+      component: require('@/components/admin/UserManagement').default
     },
     {
       path: '/FirstTime',
