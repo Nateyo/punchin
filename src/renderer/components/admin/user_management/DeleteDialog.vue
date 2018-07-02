@@ -7,7 +7,11 @@
     <v-card>
       <v-card-title class="headline">Confirm Delete User</v-card-title>
       <v-card-text>
-        Are you sure you wish to delete the following user:
+        Are you sure you wish to remove the following member?
+        <p class="text-xs-center">
+          <br>
+          <strong>{{user_confirm}}</strong>
+        </p>
       </v-card-text>
       <v-card-actions>
         <v-btn
@@ -44,6 +48,17 @@ export default {
     },
     disagree: function () {
       this.$emit('delete-user', false)
+    }
+  },
+  computed: {
+    user_confirm: function () {
+      let user_str = ''
+
+      if (this.user !== null) {
+        user_str = `${this.user.last_name}, ${this.user.first_name} ${this.user.middle_name}`
+      }
+
+      return user_str
     }
   }
 }

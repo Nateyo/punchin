@@ -52,17 +52,8 @@ let member_func = require('../../db/func/members').default
 export default {
   name: 'UserManagement',
   components: {AddMember, Breadcrumbs, DeleteDialog},
-  beforeCreate () {
-    member_func.fetchAll(true).then(members => {
-      members.forEach(member => {
-        if (member.password === 'hidden') {
-          member.has_password = 'Yes'
-        } else {
-          member.has_password = 'No'
-        }
-      })
-      this.members = members
-    })
+  mounted () {
+    this.update_members()
   },
   data: function () {
     return {
@@ -97,6 +88,18 @@ export default {
     }
   },
   methods: {
+    update_members: function (member) {
+      member_func.fetchAll(true).then(members => {
+        members.forEach(member => {
+          if (member.password === 'hidden') {
+            member.has_password = 'Yes'
+          } else {
+            member.has_password = 'No'
+          }
+        })
+        this.members = members
+      })
+    },
     member_added: function (member) {
       this.add_dialog = false
       if (member.password !== null) {
@@ -118,10 +121,11 @@ export default {
     },
     delete_user: function (agreed) {
       if (agreed) {
-        console.log(this.current_user)
+        this.current_user.destroy()
       }
       this.delete_dialog = false
       this.current_user = null
+      this.update_members()
     }
   }
 }

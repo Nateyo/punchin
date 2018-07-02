@@ -129,7 +129,7 @@ export default {
         this.password2_hint = 'Please confirm your password be re-entering.'
       }
       this.rule_password2 = this.rule_password.slice(0)
-      this.rule_password2.push(v => (v && (v === this.password)) || 'The given passwords do not match!')
+      this.rule_password2.push(v => (v === this.password) || 'The given passwords do not match!')
     }
   },
   methods: {
