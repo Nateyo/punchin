@@ -7,7 +7,7 @@
     <v-card>
       <v-card-title class="headline">Confirm Delete User</v-card-title>
       <v-card-text>
-        Are you sure you wish to remove the following member?
+        Are you sure you wish to remove the following member? <strong>Warning, this can not be reversed.</strong>
         <p class="text-xs-center">
           <br>
           <strong>{{user_confirm}}</strong>

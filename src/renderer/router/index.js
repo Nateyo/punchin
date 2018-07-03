@@ -26,9 +26,9 @@ export default new Router({
       component: require('@/components/admin/Reports').default
     },
     {
-      path: '/UserManagement',
-      name: 'UserManagement',
-      component: require('@/components/admin/UserManagement').default
+      path: '/MemberMgmt',
+      name: 'MemberMgmt',
+      component: require('@/components/admin/MemberMgmt').default
     },
     {
       path: '/FirstTime',

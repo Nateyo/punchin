@@ -2,18 +2,18 @@
   <v-layout column>
     <breadcrumbs :crumbs=breadcrumbs></breadcrumbs>
     <v-flex> <!--buttons -->
-      <v-layout row wrap>
-        <v-flex xs6>
-          <v-card @click.native="user_management" color="red" ripple height="150px">
+      <v-layout row wrap justify-space-around>
+        <v-flex xs4>
+          <v-card @click.native="nav_membermgmt" color="primary" ripple height="150px">
             <v-card-text>
               <h2>
-                User Management
+                Member Management
               </h2>
             </v-card-text>
           </v-card>
         </v-flex>
-        <v-flex xs6>
-          <v-card @click.native="reports" color="green" ripple height="150px">
+        <v-flex xs4>
+          <v-card @click.native="nav_reports" color="primary" ripple height="150px">
             <v-card-text>
               <h2>
                 Reports
@@ -49,10 +49,10 @@ export default {
     }
   },
   methods: {
-    user_management: function () {
-      this.$router.push('/UserManagement')
+    nav_membermgmt: function () {
+      this.$router.push('/MemberMgmt')
     },
-    reports: function () {
+    nav_reports: function () {
       this.$router.push('/Reports')
     }
   }

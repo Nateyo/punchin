@@ -1,26 +1,10 @@
 <template>
   <v-card class="elevation-12">
     <v-card-title>
-      New Member
+      Edit Role
     </v-card-title>
     <v-card-text>
-      <v-form ref='add_member_form' v-model='valid' lazy-validation>
-        <v-text-field
-          v-model='first_name'
-          label='First Name'
-          :rules="rule_required"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model='middle_name'
-          label='Middle Name (or initial)'
-        ></v-text-field>
-        <v-text-field
-          v-model='last_name'
-          label='Last Name'
-          :rules="rule_required"
-          required
-        ></v-text-field>
+      <v-form ref='edit_role_form' v-model='valid' lazy-validation>
         <v-text-field
           v-model='password'
           label='Password'
@@ -49,7 +33,6 @@
           label="Choose Role"
           item-value="value"
           item-text="text"
-          :disabled="forceAdmin === 'true'"
           :rules="rule_select_required"
           required
         ></v-select>
@@ -57,8 +40,8 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" :disabled="!valid" @click="submit">Save</v-btn>
-      <v-btn color="error" @click.native="reset">Cancel</v-btn>
+      <v-btn color="primary" :disabled="!valid" @click="save">Save</v-btn>
+      <v-btn color="error" @click.native="cancel">Cancel</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -67,16 +50,9 @@
 let member_func = require('../../db/func/members').default
 
 export default {
-  name: 'AddMember',
+  name: 'EditRole',
   components: {},
-  props: ['forceAdmin'],
-  created () {
-    if (this.forceAdmin === 'true') {
-      this.selected_role = 1
-    } else {
-      this.selected_role = 0
-    }
-  },
+  props: ['member'],
   data () {
     return {
       // Form validation
@@ -99,9 +75,6 @@ export default {
       ],
 
       // Form values
-      first_name: null,
-      middle_name: null,
-      last_name: null,
       password: null,
       password2: null,
 
@@ -129,35 +102,39 @@ export default {
         this.password_hint = 'Password is not required for members, but can be used if desired.'
         this.password2_hint = 'Please confirm your password be re-entering.'
       }
+
       this.rule_password2 = this.rule_password.slice(0)
       this.rule_password2.push(v => (v === this.password) || 'The given passwords do not match!')
+    },
+    member: function (m) {
+      if (m !== null) {
+        if (m.is_administrator) {
+          this.selected_role = 1
+        } else {
+          this.selected_role = 0
+        }
+      }
     }
   },
   methods: {
-    submit: function () {
-      if (this.$refs.add_member_form.validate()) {
-        let member = {
-          first_name: this.first_name,
-          middle_name: this.middle_name,
-          last_name: this.last_name,
-          password: this.password
-        }
-        member.is_administrator = this.roles[this.selected_role].value
-
-        member_func.add(member).then(member => {
-          this.$refs.add_member_form.reset()
+    save: function () {
+      if (this.$refs.edit_role_form.validate()) {
+        this.member.is_administrator = this.selected_role
+        this.member.password = this.password
+        member_func.update(this.member).then(member => {
+          this.$refs.edit_role_form.reset()
           this.selected_role = 0
-          this.$emit('created', member)
+          this.$emit('updated', member)
         })
           .catch(function (err) {
-            this.$refs.add_member_form.reset()
+            this.$refs.edit_role_form.reset()
             this.selected_role = 0
-            this.$emit('created', err)
+            this.$emit('updated', err)
           })
       }
     },
-    reset: function () {
-      this.$refs.add_member_form.reset()
+    cancel: function () {
+      this.$refs.edit_role_form.reset()
       this.selected_role = 0
       this.$emit('cancel')
     }

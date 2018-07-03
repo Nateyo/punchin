@@ -9,6 +9,12 @@ export default {
     }
     return members.create(member)
   },
+  update: function (member) {
+    if (member.password) {
+      member.password = bcrypt.hashSync(member.password, 10)
+    }
+    return member.save()
+  },
   fetchAll: function (hide_password) {
     return new Promise(function (resolve, reject) {
       members.findAll().then(members => {
@@ -23,6 +29,9 @@ export default {
 
         resolve(members)
       })
+        .catch(error => {
+          reject(error)
+        })
     })
   },
   verify: function (member_id, password) {

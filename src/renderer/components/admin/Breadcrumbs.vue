@@ -1,6 +1,6 @@
 <template>
   <v-flex>
-    <v-card color="secondary">
+    <v-card>
       <v-card-text>
         <v-breadcrumbs>
           <v-icon slot="divider">chevron_right</v-icon>
