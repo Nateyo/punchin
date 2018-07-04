@@ -1,3 +1,6 @@
+import moment from 'moment'
+var Sequelize = require('sequelize')
+const Op = Sequelize.Op
 let members = require('../models/members')
 let punch_cards = require('../models/punch_cards')
 
@@ -56,11 +59,41 @@ export default {
     }
     return punch_cards.create(punch_card)
   },
-  fetchAll: function (hide_password) {
+  fetchByMonth: function (month) {
+    let month_m = moment(month)
+    let next_month = month_m.add(1, 'month')
+    return new Promise(function (resolve, reject) {
+      punch_cards.findAll({
+        include: [{
+          model: members,
+          required: true
+        }],
+        where: {
+          action: {
+            [Op.eq]: 'in'
+          },
+          time: {
+            [Op.gte]: month,
+            [Op.lt]: next_month
+          }
+        },
+        order: [['time', 'asc']]
+      }).then(punch_cards => {
+        resolve(punch_cards)
+      })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  fetchAll: function () {
     return new Promise(function (resolve, reject) {
       punch_cards.findAll().then(punch_cards => {
         resolve(punch_cards)
       })
+        .catch(error => {
+          reject(error)
+        })
     })
   }
 }

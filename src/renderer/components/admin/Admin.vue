@@ -2,7 +2,7 @@
   <v-layout column>
     <breadcrumbs :crumbs=breadcrumbs></breadcrumbs>
     <v-flex> <!--buttons -->
-      <v-layout row wrap justify-space-around>
+      <v-layout row wrap justify-center>
         <v-flex xs4>
           <v-card @click.native="nav_membermgmt" color="primary" ripple height="150px">
             <v-card-text>
@@ -11,6 +11,8 @@
               </h2>
             </v-card-text>
           </v-card>
+        </v-flex>
+        <v-flex xs1>
         </v-flex>
         <v-flex xs4>
           <v-card @click.native="nav_reports" color="primary" ripple height="150px">

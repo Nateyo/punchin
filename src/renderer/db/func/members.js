@@ -15,6 +15,29 @@ export default {
     }
     return member.save()
   },
+  fetchSome: function (ids, hide_password) {
+    return new Promise(function (resolve, reject) {
+      members.findAll({
+        where: {
+          id: ids
+        }
+      }).then(members => {
+        members.forEach(member => {
+          if (hide_password && member.password !== null) {
+            member.password = 'hidden'
+          }
+          if (member.middle_name == null) {
+            member.middle_name = ''
+          }
+        })
+
+        resolve(members)
+      })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
   fetchAll: function (hide_password) {
     return new Promise(function (resolve, reject) {
       members.findAll().then(members => {
