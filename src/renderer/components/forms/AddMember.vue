@@ -1,7 +1,8 @@
 <template>
+  <div>
   <v-card class="elevation-12">
     <v-card-title>
-      New Member
+      <h2>New {{roles[selected_role].text}}</h2>
     </v-card-title>
     <v-card-text>
       <v-form ref='add_member_form' v-model='valid' lazy-validation>
@@ -58,9 +59,10 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="primary" :disabled="!valid" @click="submit">Save</v-btn>
-      <v-btn color="error" @click.native="reset">Cancel</v-btn>
+      <v-btn color="error" :disabled="forceAdmin === 'true'" @click.native="reset">Cancel</v-btn>
     </v-card-actions>
   </v-card>
+  </div>
 </template>
 
 <script>
@@ -104,6 +106,7 @@ export default {
       last_name: null,
       password: null,
       password2: null,
+      picture: null,
 
       // Form settings
       show_password: false
@@ -140,7 +143,8 @@ export default {
           first_name: this.first_name,
           middle_name: this.middle_name,
           last_name: this.last_name,
-          password: this.password
+          password: this.password,
+          picture: this.picture
         }
         member.is_administrator = this.roles[this.selected_role].value
 
@@ -160,6 +164,9 @@ export default {
       this.$refs.add_member_form.reset()
       this.selected_role = 0
       this.$emit('cancel')
+    },
+    cropping_done: function (blob) {
+      this.picture = blob
     }
   }
 }

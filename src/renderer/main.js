@@ -7,6 +7,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import 'cropperjs/dist/cropper.css'
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.min.css'
 

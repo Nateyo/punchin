@@ -64,6 +64,7 @@
     "@mdi/font": "^2.4.85",
     "axios": "^0.16.1",
     "bcryptjs": "^2.4.3",
+    "cropperjs": "^1.4.1",
     "material-design-icons-iconfont": "^3.0.3",
     "moment": "^2.22.2",
     "sequelize": "^4.37.6",

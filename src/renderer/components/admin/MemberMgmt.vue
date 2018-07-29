@@ -28,6 +28,18 @@
                 <v-tooltip bottom>
                   <v-icon
                     slot="activator"
+                    class="mr-2"
+                    @click="edit_photo_btn(props.item)"
+                  >
+                    mdi-face
+                  </v-icon>
+                  <span>
+                    Change profile picture.
+                  </span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <v-icon
+                    slot="activator"
                     color="blue"
                     class="mr-2"
                     @click="edit_profile_btn(props.item)"
@@ -73,6 +85,9 @@
             @delete-user="member_delete"
             >
           </delete-dialog>
+          <v-dialog v-model="edit_photo_dialog" max-width="1024px">
+            <edit-photo @cancel="edit_photo_dialog = false" @updated="edit_photo_updated"></edit-photo>
+          </v-dialog>
           <v-dialog v-model="edit_profile_dialog" max-width="768px">
             <edit-profile :member=editing_member @cancel="edit_profile_dialog = false" @updated="edit_profile_updated"></edit-profile>
           </v-dialog>
@@ -91,11 +106,12 @@ import DeleteDialog from './MemberMgmt/DeleteDialog.vue'
 import AddMember from '../forms/AddMember.vue'
 import EditRole from '../forms/EditRole.vue'
 import EditProfile from '../forms/EditProfile.vue'
+import EditPhoto from '../forms/EditPhoto.vue'
 let member_func = require('../../db/func/members').default
 
 export default {
   name: 'UserManagement',
-  components: {AddMember, Breadcrumbs, DeleteDialog, EditRole, EditProfile},
+  components: {AddMember, Breadcrumbs, DeleteDialog, EditRole, EditProfile, EditPhoto},
   mounted () {
     this.update_members()
   },
@@ -106,6 +122,7 @@ export default {
       member_add_dialog: false,
       edit_role_dialog: false,
       edit_profile_dialog: false,
+      edit_photo_dialog: false,
       delete_member_dialog: false,
       breadcrumbs: [
         {
@@ -149,6 +166,10 @@ export default {
       this.member_add_dialog = false
       this.update_members()
     },
+    edit_photo_updated: function (dataurl) {
+      this.edit_photo_dialog = false
+      this.editing_member = null
+    },
     edit_profile_updated: function (member) {
       this.edit_profile_dialog = false
       this.editing_member = null
@@ -165,6 +186,10 @@ export default {
       this.delete_member_dialog = false
       this.editing_member = null
       this.update_members()
+    },
+    edit_photo_btn: function (member) {
+      this.editing_member = member
+      this.edit_photo_dialog = true
     },
     edit_profile_btn: function (member) {
       this.editing_member = member
