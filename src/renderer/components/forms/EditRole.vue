@@ -119,9 +119,15 @@ export default {
   methods: {
     save: function () {
       if (this.$refs.edit_role_form.validate()) {
+        let fields = [
+          'is_administrator'
+        ]
+        if (this.password !== null) {
+          fields.push('password')
+        }
         this.member.is_administrator = this.selected_role
         this.member.password = this.password
-        member_func.update(this.member).then(member => {
+        member_func.update(this.member, fields).then(member => {
           this.$refs.edit_role_form.reset()
           this.selected_role = 0
           this.$emit('updated', member)

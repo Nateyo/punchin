@@ -28,6 +28,7 @@
                 <v-tooltip bottom>
                   <v-icon
                     slot="activator"
+                    color="green darken-1"
                     class="mr-2"
                     @click="edit_photo_btn(props.item)"
                   >
@@ -86,7 +87,7 @@
             >
           </delete-dialog>
           <v-dialog v-model="edit_photo_dialog" max-width="1024px">
-            <edit-photo @cancel="edit_photo_dialog = false" @updated="edit_photo_updated"></edit-photo>
+            <edit-photo :member=editing_member @cancel="edit_photo_dialog = false" @updated="edit_photo_updated"></edit-photo>
           </v-dialog>
           <v-dialog v-model="edit_profile_dialog" max-width="768px">
             <edit-profile :member=editing_member @cancel="edit_profile_dialog = false" @updated="edit_profile_updated"></edit-profile>
@@ -162,19 +163,19 @@ export default {
         this.members = members
       })
     },
-    member_created: function (member) {
+    member_created: function (result) {
       this.member_add_dialog = false
       this.update_members()
     },
-    edit_photo_updated: function (dataurl) {
+    edit_photo_updated: function (result) {
       this.edit_photo_dialog = false
       this.editing_member = null
     },
-    edit_profile_updated: function (member) {
+    edit_profile_updated: function (result) {
       this.edit_profile_dialog = false
       this.editing_member = null
     },
-    edit_role_updated: function (member) {
+    edit_role_updated: function (result) {
       this.edit_role_dialog = false
       this.editing_member = null
       this.update_members()

@@ -7,7 +7,7 @@
       <template v-for="(member, index) in members">
         <v-list-tile :key="index" avatar>
           <v-list-tile-avatar>
-            <img v-if="member.portrait" :src="member.portrait">
+            <img v-if="member.picture" :src="member.picture">
             <img v-else src='static/portrait.png'>
           </v-list-tile-avatar>
           <v-list-tile-content>

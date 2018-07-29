@@ -63,21 +63,18 @@ export default {
         this.member.first_name = this.first_name
         this.member.middle_name = this.middle_name
         this.member.last_name = this.last_name
-        member_func.update(this.member).then(member => {
+        member_func.update(this.member, ['first_name', 'middle_name', 'last_name']).then(member => {
           this.$refs.edit_profile_form.reset()
-          this.selected_role = 0
           this.$emit('updated', member)
         })
           .catch(function (err) {
             this.$refs.edit_profile_form.reset()
-            this.selected_role = 0
             this.$emit('updated', err)
           })
       }
     },
     cancel: function () {
       this.$refs.edit_profile_form.reset()
-      this.selected_role = 0
       this.$emit('cancel')
     }
   }

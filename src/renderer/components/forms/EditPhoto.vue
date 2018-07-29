@@ -1,15 +1,15 @@
 <template>
-  <v-card>
+  <v-card v-if="resetme">
     <v-card-title>
       Please select an image to be used.
     </v-card-title>
     <v-card-text>
-      <div>
+      <div id='fileinput'>
         <input type="file" v-on:change="photoUploaded">
       </div>
       <v-layout row wrap>
         <v-flex d-flex>
-          <div>
+          <div id="editor">
             <img id="photo_orig">
           </div>
         </v-flex>
@@ -20,7 +20,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" @click="save">Save</v-btn>
+      <v-btn color="primary" :disabled="!cropper" @click="save">Save</v-btn>
       <v-btn color="error" @click.native="cancel">Cancel</v-btn>
     </v-card-actions>
   </v-card>
@@ -28,11 +28,14 @@
 
 <script>
 import Cropper from 'cropperjs'
+let member_func = require('../../db/func/members').default
 
 export default {
   name: 'EditPhoto',
+  props: ['member'],
   data () {
     return {
+      resetme: true,
       cropper: null
     }
   },
@@ -63,38 +66,37 @@ export default {
       }
       reader.readAsDataURL(event.target.files[0])
     },
-    cropPhoto: function () {
-      let dataurl = this.cropper.getCroppedCanvas({
+    getCroppedPhoto: function () {
+      return this.cropper.getCroppedCanvas({
         width: 200,
         height: 200,
         fillColor: '#fff',
         imageSmoothingEnabled: true,
         imageSmoothingQuality: 'high'
       }).toDataURL('image/png')
-
-      this.$emit('updated', dataurl)
     },
     save: function () {
-      if (this.$refs.edit_profile_form.validate()) {
-        this.member.first_name = this.first_name
-        this.member.middle_name = this.middle_name
-        this.member.last_name = this.last_name
-        member_func.update(this.member).then(member => {
-          this.$refs.edit_profile_form.reset()
-          this.selected_role = 0
+      if (this.cropper != null) {
+        this.member.picture = this.getCroppedPhoto()
+        member_func.update(this.member, ['picture']).then(member => {
+          this.reset()
           this.$emit('updated', member)
         })
           .catch(function (err) {
-            this.$refs.edit_profile_form.reset()
-            this.selected_role = 0
+            this.reset()
             this.$emit('updated', err)
           })
       }
     },
     cancel: function () {
-      this.$refs.edit_profile_form.reset()
-      this.selected_role = 0
+      this.reset()
       this.$emit('cancel')
+    },
+    reset: function () {
+      this.resetme = false
+      this.$nextTick(() => {
+        this.resetme = true
+      })
     }
   }
 }
@@ -102,6 +104,6 @@ export default {
 
 <style lang='scss'>
 img {
-  max-width: 100%; /* This rule is very important, please do not ignore this! */
+  max-width: 100%;
 }
 </style>

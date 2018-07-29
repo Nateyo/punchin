@@ -9,11 +9,14 @@ export default {
     }
     return members.create(member)
   },
-  update: function (member) {
-    if (member.password) {
+  update: function (member, fields) {
+    if (fields.includes('password')) {
       member.password = bcrypt.hashSync(member.password, 10)
     }
-    return member.save()
+
+    return member.save({
+      fields: fields
+    })
   },
   fetchSome: function (ids, hide_password) {
     return new Promise(function (resolve, reject) {
