@@ -24,10 +24,10 @@
               </span>
             </v-card-text>
           </v-card>
-          <v-dialog v-model="report_dialog" max-width="768px">
+          <v-dialog v-model="report_dialog" :fullscreen="true">
             <v-card>
               <v-card-title>
-                <span class="headline">Monthly Attendance</span>
+                <span class="headline">Monthly Attendance by Member {{report_month}} {{report_year}}</span>
               </v-card-title>
               <v-card-text>
                 <v-data-table
@@ -51,6 +51,31 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-dialog v-model="per_day_report" :fullscreen="true">
+            <v-card>
+              <v-card-title>
+                <span class="headline">Average Attendance per Day {{report_month}} {{report_year}}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-data-table
+                  :headers="per_day_headers"
+                  :items="per_day_items"
+                  :disable-initial-sort="true"
+                  hide-actions
+                  class="elevation-4"
+                >
+                  <template slot="items" slot-scope="props">
+                    <td>{{ props.item.dotw }}</td>
+                    <td>{{ props.item.attendance }}</td>
+                  </template>
+                </v-data-table>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" flat="flat" @click="per_day_report = false">Close</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-flex>
       </v-layout>
     </v-flex>
@@ -71,6 +96,9 @@ export default {
       month_picker: null,
       report_selected: null,
       report_dialog: false,
+      per_day_report: false,
+      report_month: null,
+      report_year: null,
       reports: [
         { text: 'Average daily attendance', value: 0 },
         { text: 'Number of days attended', value: 1 }
@@ -82,6 +110,11 @@ export default {
         { text: 'Middle Name', value: 'middle_name' },
         { text: 'Last Name', value: 'last_name' },
         { text: 'Days Attended', value: 'attendance' }
+      ],
+      per_day_items: [],
+      per_day_headers: [
+        { text: 'Day of the Week', value: 'dotw' },
+        { text: 'Average Attendance', value: 'attendance' }
       ],
       breadcrumbs: [
         {
@@ -131,6 +164,9 @@ export default {
             members.forEach(member => {
               member.attendance = num_days_attended[member.id]
             })
+
+            this.report_month = moment(this.month_picker).format('MMMM')
+            this.report_year = moment(this.month_picker).year()
             this.items = members
             this.report_dialog = true
           })
@@ -163,7 +199,40 @@ export default {
             day_of_week_members[day_of_week]++
           }
 
-          console.log(day_of_week_members)
+          this.per_day_items = [
+            {
+              dotw: 'Sunday',
+              attendance: day_of_week_members[0]
+            },
+            {
+              dotw: 'Monday',
+              attendance: day_of_week_members[1]
+            },
+            {
+              dotw: 'Tuesday',
+              attendance: day_of_week_members[2]
+            },
+            {
+              dotw: 'Wednesday',
+              attendance: day_of_week_members[3]
+            },
+            {
+              dotw: 'Thursday',
+              attendance: day_of_week_members[4]
+            },
+            {
+              dotw: 'Friday',
+              attendance: day_of_week_members[5]
+            },
+            {
+              dotw: 'Saturday',
+              attendance: day_of_week_members[6]
+            }
+          ]
+
+          this.report_month = moment(this.month_picker).format('MMMM')
+          this.report_year = moment(this.month_picker).year()
+          this.per_day_report = true
         })
       }
     }
