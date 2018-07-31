@@ -1,6 +1,6 @@
 {
   "name": "punchin",
-  "version": "0.0.0",
+  "version": "0.5.0",
   "author": "Nateyo <nate.dellinger@gmail.com>",
   "description": "A simple app to keep track of members clocking in and out.",
   "license": "MIT",
